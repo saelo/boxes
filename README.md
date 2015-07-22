@@ -28,7 +28,7 @@ And you'll have an apache webserver serving the content in ./websrv/webroot/ to 
 
 Getting the base images
 -----------------------
-Before being able to use the VM profiles you'll need some base images (called [boxes](https://docs.vagrantup.com/v2/boxes.html)) for vagrant to use. You can either build those yourself using packer but you can also just grab prebuilt images from e.g. [here](https://vagrantcloud.com/hashicorp).
+Before being able to use the VM profiles you'll need some base images (called [boxes](https://docs.vagrantup.com/v2/boxes.html)) for vagrant to use. You can either build those yourself using packer or use public images from e.g. [here](https://vagrantcloud.com/hashicorp) by changing the box name in the Vagrantfiles (e.g. change "ubuntu-14.04-amd64" to "ubuntu/trusty64" to use the official ubuntu 14.04 vagrant box).
 
 Building the boxes yourself with packer is straight forward:
 
