@@ -17,6 +17,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Do some basic provisioning.
   config.vm.provision "shell", path: "../scripts/debian/upgrade.sh"
+  config.vm.provision "shell", path: "../scripts/ubuntu/essentials.sh"
   config.vm.provision "shell", path: "../scripts/common/vim.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/common/zsh.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/debian/lockdown.sh"

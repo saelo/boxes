@@ -3,4 +3,4 @@
 # Sets up multiarch support.
 #
 
-apt-get install libc6-i386 gdb-multiarch
+apt-get install -y libc6-i386 gdb-multiarch
