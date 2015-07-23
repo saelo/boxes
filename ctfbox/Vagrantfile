@@ -30,5 +30,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   #config.vm.provision "shell", path: "../scripts/packages/z3.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/capstone.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/ropgadget.sh", privileged: false
+  config.vm.provision "shell", path: "../scripts/packages/pwntools.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/checksec.sh", privileged: false
 end
