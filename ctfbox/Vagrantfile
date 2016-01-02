@@ -18,12 +18,12 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Bump up the specs a bit
   config.vm.provider "virtualbox" do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "8192"]
-    vb.customize ["modifyvm", :id, "--cpus", "4"]
+    vb.customize ["modifyvm", :id, "--memory", "4096"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
   end
 
   # Share CTF folder
-  #config.vm.synced_folder "~/Desktop/ctf", "/home/vagrant/ctf"
+  # config.vm.synced_folder "~/Desktop/ctf", "/home/vagrant/ctf"
 
   # Do some basic provisioning.
   config.vm.provision "shell", path: "../scripts/debian/upgrade.sh"
@@ -39,7 +39,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", path: "../scripts/packages/capstone.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/pwndbg.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/pin.sh", privileged: false
-  #config.vm.provision "shell", path: "../scripts/packages/z3.sh", privileged: false
+  # config.vm.provision "shell", path: "../scripts/packages/z3.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/ropgadget.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/pwntools.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/checksec.sh", privileged: false
