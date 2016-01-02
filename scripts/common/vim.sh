@@ -44,7 +44,8 @@ vim -c PluginInstall -c qa > /dev/null 2>&1
 
 # Finish YouCompleteMe installation
 cd ~/.vim/bundle/YouCompleteMe
-./install.sh --clang-completer --gocode-completer
+# requires python2 .....
+python install.py --clang-completer --gocode-completer
 
 # Fetch real vimrc
 curl -s https://gist.githubusercontent.com/saelo/da3e5ad7c6885472b1f0/raw/.vimrc > ~/.vimrc
