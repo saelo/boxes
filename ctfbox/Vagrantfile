@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Configure the box.
-  config.vm.box = "ubuntu-14.04-amd64"
+  config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "ctfbox"
 
   # Configure SSH access.
@@ -14,6 +14,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Forward ports. Modify as needed.
   config.vm.network "forwarded_port", guest: 4444, host: 4444
+  config.vm.network "forwarded_port", guest: 24242, host: 24242
+
+  # Bump up the specs a bit
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "8192"]
+    vb.customize ["modifyvm", :id, "--cpus", "4"]
+  end
+
+  # Share CTF folder
+  #config.vm.synced_folder "~/Desktop/ctf", "/home/vagrant/ctf"
 
   # Do some basic provisioning.
   config.vm.provision "shell", path: "../scripts/debian/upgrade.sh"
@@ -23,13 +33,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", path: "../scripts/debian/lockdown.sh"
   config.vm.provision "shell", path: "../scripts/ubuntu/multiarch.sh"
   config.vm.provision "shell", path: "../scripts/ubuntu/netsec.sh"
+  config.vm.provision "shell", path: "../scripts/packages/virtualenv.sh"
 
   # Install CTF related packages.
-  config.vm.provision "shell", path: "../scripts/packages/peda.sh", privileged: false
+  config.vm.provision "shell", path: "../scripts/packages/capstone.sh", privileged: false
+  config.vm.provision "shell", path: "../scripts/packages/pwndbg.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/pin.sh", privileged: false
   #config.vm.provision "shell", path: "../scripts/packages/z3.sh", privileged: false
-  config.vm.provision "shell", path: "../scripts/packages/capstone.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/ropgadget.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/pwntools.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/checksec.sh", privileged: false
+  config.vm.provision "shell", path: "../scripts/packages/angr.sh", privileged: false
 end
