@@ -2,4 +2,4 @@
 
 echo "Autremoving packages..."
 
-apt-get autremove
+apt-get autoremove
