@@ -12,3 +12,9 @@ sudo apt-get -y install python2.7-dev build-essential libxml2-dev libxslt1-dev g
 git clone https://github.com/angr/angr-dev .angr
 cd .angr
 ./setup.sh -p angr
+
+echo "=============================================================================="
+echo
+echo "angr successfully installed. Use 'workon angr' to activate the angr virtualenv"
+echo
+echo "=============================================================================="

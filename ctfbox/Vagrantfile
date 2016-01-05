@@ -33,7 +33,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", path: "../scripts/debian/lockdown.sh"
   config.vm.provision "shell", path: "../scripts/ubuntu/multiarch.sh"
   config.vm.provision "shell", path: "../scripts/ubuntu/netsec.sh"
-  config.vm.provision "shell", path: "../scripts/packages/virtualenv.sh"
+  config.vm.provision "shell", path: "../scripts/packages/virtualenv.sh", privileged: false
 
   # Install CTF related packages.
   config.vm.provision "shell", path: "../scripts/packages/capstone.sh", privileged: false
