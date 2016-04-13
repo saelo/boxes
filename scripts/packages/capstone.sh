@@ -1,6 +1,11 @@
 #!/bin/bash
 
-sudo apt-get -y install python-pip python3-pip
+git clone https://github.com/aquynh/capstone.git
+cd capstone
 
-sudo pip install capstone
-sudo pip3 install capstone
+./make.sh
+sudo ./make.sh install
+
+cd bindings/python
+sudo make install
+sudo make install3
