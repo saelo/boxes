@@ -12,11 +12,19 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.hostname = "winbox"
   config.vm.communicator = "winrm"
 
+  config.vm.guest = :windows
+
   # Try this when having network issues
   # config.vm.network "public_network"
 
   config.winrm.username = "sam"
   config.winrm.password = "vagrant"
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--memory", "8192"]
+    vb.customize ["modifyvm", :id, "--cpus", "4"]
+    vb.gui = true
+  end
 
   config.vm.network :forwarded_port, guest: 3389, host: 3389, id: "rdp", auto_correct:true
 end

@@ -5,6 +5,8 @@
 
 set -e
 
+export DEBIAN_FRONTEND=noninteractive
+
 # Classics.
 apt-get -y install nmap strace ltrace gdb nasm hexedit
 
