@@ -45,8 +45,11 @@ vim +PluginInstall +qall > /dev/null
 
 # Finish YouCompleteMe installation
 cd ~/.vim/bundle/YouCompleteMe
-# requires python2 .....
-python install.py --clang-completer
+if vim --version | grep -q +python3; then
+    python3 install.py --clang-completer
+else
+    python install.py --clang-completer
+fi
 
 # Fetch real vimrc
 curl -s https://gist.githubusercontent.com/saelo/da3e5ad7c6885472b1f0/raw/.vimrc > ~/.vimrc
