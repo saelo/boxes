@@ -2,4 +2,4 @@
 
 echo "Autremoving packages..."
 
-apt-get autoremove
+apt-get -y autoremove
