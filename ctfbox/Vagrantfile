@@ -8,6 +8,8 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Configure the box.
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "ctfbox"
+  config.vm.box_version = "20160509.1.0";
+  config.vm.box_check_update = false
 
   # Configure SSH access.
   config.ssh.username = "vagrant"
@@ -38,7 +40,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Install CTF related packages.
   config.vm.provision "shell", path: "../scripts/packages/capstone.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/pwndbg.sh", privileged: false
-  config.vm.provision "shell", path: "../scripts/packages/pin.sh", privileged: false
+  # config.vm.provision "shell", path: "../scripts/packages/pin.sh", privileged: false
   # config.vm.provision "shell", path: "../scripts/packages/z3.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/ropgadget.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/pwntools.sh", privileged: false
