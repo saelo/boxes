@@ -6,13 +6,14 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Configure the box.
+  #config.vm.box = "ubuntu/xenial64"
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "ctfbox"
-  config.vm.box_version = "20160509.1.0";
-  config.vm.box_check_update = false
+  config.vm.box_check_update = true
 
   # Configure SSH access.
   config.ssh.username = "vagrant"
+  #config.ssh.username = "ubuntu"
 
   # Forward ports. Modify as needed.
   config.vm.network "forwarded_port", guest: 4444, host: 4444
