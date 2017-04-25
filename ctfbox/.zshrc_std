@@ -1,0 +1,165 @@
+# Path to your oh-my-zsh configuration.
+ZSH=$HOME/.oh-my-zsh
+
+# Set name of the theme to load.
+# Look in ~/.oh-my-zsh/themes/
+# Optionally, if you set this to "random", it'll load a random theme each
+# time that oh-my-zsh is loaded.
+ZSH_THEME="gnzh"
+
+# Texteditor and zshconfig alaises
+# alias sublime="'/Applications/Sublime Text 2.app/Contents/SharedSupport/bin/subl'"
+# alias s="sublime"
+alias zshconfig="nano ~/.zshrc"
+
+# Set to this to use case-sensitive completion
+# CASE_SENSITIVE="true"
+
+# Comment this out to disable weekly auto-update checks
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment following line if you want to disable colors in ls
+# DISABLE_LS_COLORS="true"
+
+# Uncomment following line if you want to disable autosetting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment following line if you want red dots to be displayed while waiting for completion
+COMPLETION_WAITING_DOTS="true"
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+plugins=(git mercurial repo python history-substring-search vagrant common-aliases pip zsh-syntax-highlighting encode64 web-search colored-man-pages extract)
+
+source $ZSH/oh-my-zsh.sh
+
+# Customize to your needs...
+
+# Path for custom binaries, scripts, etc.
+export PATH=$PATH:$HOME/bin
+
+# Set up rvm if installed
+if [ -d $HOME/.rvm ]; then
+    export PATH=$PATH:$HOME/.rvm/bin
+    source $HOME/.rvm/scripts/rvm
+fi
+
+# Announce 256 bit color support
+export TERM=xterm-256color
+
+# Start ROPgadget automatically with a binary as first argument
+alias ROPgadget='ROPgadget --binary'
+
+# Less gdb output
+alias gdb='gdb -q'
+
+# Update pip packages
+alias pipupgrade="pip list --outdated | cut -d ' ' -f1 | xargs -n1 pip install -U"
+alias pipupgrade_sudo="pip list --outdated | cut -d ' ' -f1 | xargs -n1 sudo pip install -U"
+
+# Use C++11 standard by default
+alias g++='g++ --std=c++11'
+alias clang++='clang++ --std=c++11'
+
+# Clear pacman cache: Only keep the latest version of every installed package in the cache
+alias clearcache='sudo paccache -r -k 1; sudo paccache -r -u -k 0'
+
+#
+# Highlights every occurande of the search pattern while displaying the whole content
+#
+# usage: cmd | highlight search_pattern
+#        highlight search_pattern file
+highlight() {
+    grep -E "$|$1" --color $2
+}
+
+#
+# Interface to the OS clipboard
+#
+# usage: clip           # show clipboard content
+#        clip <file>    # copy file content to clipboard
+#        cmd | clip     # copy output of cmd to clipboard
+clip() {
+    if [[ -t 0  && -z "$1" ]]; then
+        # output contents of clipboard
+        xclip -out -selection clipboard
+    elif [[ -n "$1" ]]; then
+        # copy file contents to clipboard
+        xclip -in -selection clipboard < "$1"
+    else
+        # read from stdin
+        xclip -in -selection clipboard
+    fi
+}
+
+
+#
+# cat with syntax highlighting
+#
+# usage: scat file1 file2 ...
+#
+scat() {
+  for arg in "$@"; do
+    pygmentize -g "$arg" 2> /dev/null || cat "$arg"
+  done
+}
+
+#
+# Create a new directory and cd into it
+# Similar to "mkdir xxx && cd $_"
+#
+mkcd() {
+  if [ ! -n "$1" ]; then
+    echo "Enter a directory name"
+  elif [ -d $1 ]; then
+    echo "\`$1' already exists"
+  else
+    mkdir $1 && cd $1
+  fi
+}
+
+#
+# Share files using transfer.io
+#
+# Uploads the provided file or data (if being piped to) to https://transfer.sh and puts the resulting URL into the OS clipboard.
+#
+# usage:
+#   transfer <file>
+#   some_command | transfer filename.txt
+#
+transfer() {
+    if [ $# -eq 0 ]; then
+        echo "No arguments specified. Usage:\ntransfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"
+        return 1
+    fi
+
+    file=$1
+    tmpfile=$(mktemp -t transferXXX)
+    basefile=$(basename "$file" | sed -e 's/[^a-zA-Z0-9._-]/-/g')
+
+    if [ -t 0 ]; then
+        # stdin is a terminal, so assume the user wants to upload a local file/directory (as opposed to piping the data to this function).
+        if [ ! -e $file ]; then
+            echo "File $file doesn't exists."
+            return 1
+        fi
+
+        if [ -d $file ]; then
+            # zip directory content and transfer.
+            zipfile=$(mktemp -t transferXXX.zip)
+            cd $(dirname $file) && zip -r -q - $(basename $file) >> $zipfile
+            curl --progress-bar --upload-file "$zipfile" "https://transfer.sh/$basefile.zip" >> $tmpfile
+            rm -f $zipfile
+        else
+            # transfer file.
+            curl --progress-bar --upload-file "$file" "https://transfer.sh/$basefile" >> $tmpfile
+        fi
+    else
+        # stdin is not a terminal. Presumably someone is piping something to us, so upload that.
+        curl --progress-bar --upload-file - "https://transfer.sh/$basefile" >> $tmpfile
+    fi
+
+    cat $tmpfile
+    rm -f $tmpfile
+}

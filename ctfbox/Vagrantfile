@@ -6,11 +6,14 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Configure the box.
+  #config.vm.box = "ubuntu/xenial64"
   config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "ctfbox"
+  config.vm.box_check_update = true
 
   # Configure SSH access.
   config.ssh.username = "vagrant"
+  #config.ssh.username = "ubuntu"
 
   # Forward ports. Modify as needed.
   config.vm.network "forwarded_port", guest: 4444, host: 4444
@@ -18,17 +21,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Bump up the specs a bit
   config.vm.provider "virtualbox" do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "8192"]
-    vb.customize ["modifyvm", :id, "--cpus", "4"]
+    vb.customize ["modifyvm", :id, "--memory", "4096"]
+    vb.customize ["modifyvm", :id, "--cpus", "2"]
   end
 
   # Share CTF folder
-  #config.vm.synced_folder "~/Desktop/ctf", "/home/vagrant/ctf"
+  # config.vm.synced_folder "~/Desktop/ctf", "/home/vagrant/ctf"
 
   # Do some basic provisioning.
   config.vm.provision "shell", path: "../scripts/debian/upgrade.sh"
   config.vm.provision "shell", path: "../scripts/ubuntu/essentials_legacy.sh"
-  config.vm.provision "shell", path: "../scripts/common/vim.sh", privileged: false
+  # config.vm.provision "shell", path: "../scripts/common/vim.sh", privileged: false
+
   config.vm.provision "shell", path: "../scripts/common/zsh.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/common/lockdown.sh"
   config.vm.provision "shell", path: "../scripts/ubuntu/multiarch.sh"
@@ -38,10 +42,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Install CTF related packages.
   config.vm.provision "shell", path: "../scripts/packages/capstone.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/pwndbg.sh", privileged: false
-  config.vm.provision "shell", path: "../scripts/packages/pin.sh", privileged: false
-  #config.vm.provision "shell", path: "../scripts/packages/z3.sh", privileged: false
+  # config.vm.provision "shell", path: "../scripts/packages/pin.sh", privileged: false
+  # config.vm.provision "shell", path: "../scripts/packages/z3.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/ropgadget.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/pwntools.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/checksec.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/angr.sh", privileged: false
+
+  # Uninstall unneeded packages
+  config.vm.provision "shell", path: "../scripts/debian/autoremove.sh"
+
 end
