@@ -4,4 +4,6 @@
 
 export DEBIAN_FRONTEND=noninteractive
 
-apt-get -y install htop vim-nox git curl zsh build-essential tree cmake python3-dev python3-pip silversearcher-ag
+# TODO remove when installed by default...
+apt-get install virtualbox-guest-dkms
+apt-get -y install htop vim-nox git curl zsh build-essential tree cmake python python-pip python3-dev python3-pip silversearcher-ag gdb

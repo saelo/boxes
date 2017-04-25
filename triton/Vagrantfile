@@ -6,8 +6,8 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Configure the box
-  config.vm.box = "ubuntu/trusty64"
-  config.vm.hostname = "triton"
+  config.vm.box = "ubuntu/xenial64"
+  #config.vm.hostname = "triton"
 
   # Bump up the specs a bit
   config.vm.provider "virtualbox" do |vb|
@@ -15,12 +15,15 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     vb.customize ["modifyvm", :id, "--cpus", "4"]
   end
 
+  config.vm.synced_folder ".", "/home/ubuntu/share"
+
   # Do some basic provisioning
   config.vm.provision "shell", path: "../scripts/debian/upgrade.sh"
-  config.vm.provision "shell", path: "../scripts/ubuntu/essentials_legacy.sh"
+  config.vm.provision "shell", path: "../scripts/ubuntu/essentials.sh"
   config.vm.provision "shell", path: "../scripts/common/vim.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/common/zsh.sh", privileged: false
 
+  config.vm.provision "shell", path: "../scripts/packages/pin.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/z3.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/capstone.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/triton.sh", privileged: false

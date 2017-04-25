@@ -4,9 +4,9 @@
 #
 # To be run as regular user.
 
-set -e
+set -e -x
 
-FILENAME="pin-2.14-71313-gcc.4.4.7-linux.tar.gz"
+FILENAME="pin-3.2-81205-gcc-linux.tar.gz"
 URL="http://software.intel.com/sites/landingpage/pintool/downloads/${FILENAME}"
 
 cd ~

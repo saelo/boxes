@@ -9,7 +9,7 @@
 #  * Z3
 #
 
-set -e
+set -e -x
 
 # Boost is another prerequisite
 sudo apt-get -y install libboost-dev

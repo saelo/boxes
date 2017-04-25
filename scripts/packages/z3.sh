@@ -5,7 +5,7 @@
 # To be run as regular user
 #
 
-set -e
+set -e -x
 
 git clone https://github.com/Z3Prover/z3.git
 cd z3

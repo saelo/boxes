@@ -3,7 +3,7 @@
 # To be run as regular user.
 #
 
-set -e
+set -e -x
 
 export DEBIAN_FRONTEND=noninteractive
 
