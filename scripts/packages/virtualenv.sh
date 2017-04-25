@@ -6,4 +6,4 @@ set -e
 
 sudo apt-get -y install virtualenvwrapper
 
-echo "source /usr/share/virtualenvwrapper/virtualenvwrapper.sh" | tee -a ~/.bashrc ~/.zshrc
+printf "\nsource /usr/share/virtualenvwrapper/virtualenvwrapper.sh" | tee -a ~/.bashrc ~/.zshrc

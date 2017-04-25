@@ -2,4 +2,8 @@
 #
 # Installs some essential packages.
 
-apt-get -y install htop vim git curl zsh build-essential tree cmake python-dev silversearcher-ag
+export DEBIAN_FRONTEND=noninteractive
+
+# TODO remove when installed by default...
+apt-get install virtualbox-guest-dkms
+apt-get -y install htop vim-nox git curl zsh build-essential tree cmake python python-pip python3-dev python3-pip silversearcher-ag gdb

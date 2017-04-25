@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Configure the box
-  config.vm.box = "ubuntu-14.10-amd64"
+  config.vm.box = "ubuntu/trusty64"
   config.vm.hostname = "websrv"
 
   # Configure SSH access
@@ -27,6 +27,6 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Do some basic provisioning
   config.vm.provision "shell", path: "../scripts/ubuntu/websrv.sh"
-  config.vm.provision "shell", path: "../scripts/debian/lockdown.sh"
+  config.vm.provision "shell", path: "../scripts/common/lockdown.sh"
 
 end

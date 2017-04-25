@@ -5,23 +5,12 @@
 # To be run as regular user
 #
 
-URL="https://github.com/Z3Prover/z3/archive/"
+set -e -x
 
-set -e
-
-FILENAME="z3-4.4.0.tar.gz"
-URL="https://github.com/Z3Prover/z3/archive/${FILENAME}"
-
-cd ~
-mkdir z3
-
-wget -q $URL
-tar -xz -C z3 --strip-components=1 -f ${FILENAME}
-rm ${FILENAME}
-
+git clone https://github.com/Z3Prover/z3.git
 cd z3
 
-python scripts/mk_make.py
+python scripts/mk_make.py --python
 cd build
-make -j2
+make -j4
 sudo make install
