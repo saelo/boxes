@@ -18,12 +18,20 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Bump up the specs a bit
   config.vm.provider "virtualbox" do |vb|
-    vb.customize ["modifyvm", :id, "--memory", "8192"]
-    vb.customize ["modifyvm", :id, "--cpus", "4"]
+    vb.customize ["modifyvm", :id, "--memory", "2048"]
+    vb.customize ["modifyvm", :id, "--cpus", "1"]
   end
 
+  # The following line prevents easy VM -> Host privesc through /vagrant/Vagrantfile.
+  # This does, however, only prevents unprivileged users from doing so as root in the
+  # VM can still `mount -o remount,rw`.
+  # If you are going to run untrusted code you should instead uncomment the second
+  # line to disable the /vagrant directory alltogether (or maybe not use vagrant at all).
+  config.vm.synced_folder ".", "/vagrant", :mount_options => ["ro"], owner: "root", group: "root"
+  #config.vm.synced_folder ".", "/vagrant", disabled: true
+
   # Share CTF folder
-  #config.vm.synced_folder "~/Desktop/ctf", "/home/vagrant/ctf"
+  config.vm.synced_folder "~/Desktop/ctf", "/home/vagrant/ctf"
 
   # Do some basic provisioning.
   config.vm.provision "shell", path: "../scripts/debian/upgrade.sh"
@@ -37,11 +45,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   # Install CTF related packages.
   config.vm.provision "shell", path: "../scripts/packages/capstone.sh", privileged: false
-  config.vm.provision "shell", path: "../scripts/packages/pwndbg.sh", privileged: false
-  config.vm.provision "shell", path: "../scripts/packages/pin.sh", privileged: false
-  #config.vm.provision "shell", path: "../scripts/packages/z3.sh", privileged: false
+  #config.vm.provision "shell", path: "../scripts/packages/keystone.sh", privileged: false
+  config.vm.provision "shell", path: "../scripts/packages/unicorn.sh", privileged: false
+  config.vm.provision "shell", path: "../scripts/packages/gef.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/ropgadget.sh", privileged: false
-  config.vm.provision "shell", path: "../scripts/packages/pwntools.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/packages/checksec.sh", privileged: false
-  config.vm.provision "shell", path: "../scripts/packages/angr.sh", privileged: false
 end
