@@ -6,7 +6,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   # Configure the box.
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "ubuntu/zesty64"
   config.vm.hostname = "manticore"
 
   # Forward ports. Modify as needed.
@@ -22,6 +22,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.provision "shell", path: "../scripts/debian/upgrade.sh"
   config.vm.provision "shell", path: "../scripts/ubuntu/essentials.sh"
 
+  config.vm.provision "shell", path: "../scripts/common/vim.sh", privileged: false
   config.vm.provision "shell", path: "../scripts/common/zsh.sh", privileged: false
 
   config.vm.provision "shell", path: "../scripts/ubuntu/multiarch.sh"
