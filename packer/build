@@ -1,0 +1,17 @@
+#!/bin/bash
+
+TIMEZONE=Europe/Berlin
+
+if [[ $# != 2 ]]; then
+  echo >&2 "Usage: $0 target provider"
+  exit 1
+fi
+tmpdir=`mktemp -d /tmp/build.XXXXXXXX`
+fname=$tmpdir/template.json
+which python2 && PY=python2 || PY=python
+$PY create_template.py target=$1 provider=$2 \
+    "time_zone=$TIMEZONE" \
+      > $fname || (rm $fname; exit 1)
+echo "Using template at $fname"
+which packer-io && PACKER=packer-io || PACKER=packer
+$PACKER build $fname && rm $fname
